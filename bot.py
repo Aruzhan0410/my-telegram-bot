@@ -1,6 +1,8 @@
 import os
 from telegram import Update
 from telegram.ext import Application, CommandHandler, CallbackContext
+from flask import Flask
+import threading
 
 # Получаем токен из переменных окружения
 TELEGRAM_TOKEN = os.getenv("TELEGRAM_TOKEN")
@@ -19,10 +21,24 @@ async def start(update: Update, context: CallbackContext):
 # Добавляем команду /start в бота
 app.add_handler(CommandHandler("start", start))
 
-# Импортируем keep_alive для Render
-from keep_alive import keep_alive
+# Создаём Flask приложение для работы на Render
+flask_app = Flask(__name__)
+
+@flask_app.route('/')
+def home():
+    return "Бот работает!"
+
+# Функция для запуска Flask сервера
+def run():
+    flask_app.run(host='0.0.0.0', port=8080)
+
+# Запускаем Flask сервер в отдельном потоке
+def keep_alive():
+    server = threading.Thread(target=run)
+    server.start()
+
+# Импортируем keep_alive и запускаем сервер
 keep_alive()
 
-# Запускаем бота
-print("Бот запущен...")
+# Начинаем слушать и обрабатывать обновления Telegram
 app.run_polling()
