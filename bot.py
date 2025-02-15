@@ -30,5 +30,17 @@ def home():
 
 # Функция для запуска Flask сервера
 def run():
-    flask_app.run(host='0.
+    flask_app.run(host='0.0.0.0', port=8080)
+
+# Запускаем Flask сервер в отдельном потоке
+def keep_alive():
+    server = threading.Thread(target=run)
+    server.start()
+
+# Импортируем keep_alive и запускаем сервер
+keep_alive()
+
+# Начинаем слушать и обрабатывать обновления Telegram
+print("Бот запущен...")
+app.run_polling()
   
