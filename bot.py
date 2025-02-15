@@ -4,12 +4,8 @@ from telegram.ext import Application, CommandHandler, CallbackContext
 from flask import Flask
 import threading
 
-# Получаем токен из переменных окружения
-TELEGRAM_TOKEN = os.getenv("TELEGRAM_TOKEN")
-
-if not TELEGRAM_TOKEN:
-    print("Ошибка: отсутствует TELEGRAM_TOKEN")
-    exit(1)
+# Задайте токен бота прямо в коде
+TELEGRAM_TOKEN = "7680360079:AAHQqs16sEHPnjLyZ8_74a4qNir0cvhI0qo"
 
 # Создаём объект бота
 app = Application.builder().token(TELEGRAM_TOKEN).build()
@@ -41,6 +37,4 @@ def keep_alive():
 keep_alive()
 
 # Начинаем слушать и обрабатывать обновления Telegram
-print("Бот запущен...")
 app.run_polling()
-  
